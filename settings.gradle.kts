@@ -21,4 +21,6 @@ dependencyResolutionManagement {
 
 rootProject.name = "LloydsCleanArchitecture"
 include(":app")
- 
+include(":core")
+
+include(":features:assessment")

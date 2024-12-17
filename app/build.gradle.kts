@@ -1,22 +1,22 @@
+import dependencies.LyodsDependencies
 
 plugins {
-    alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.android)
-
-    id("kotlin-kapt")
+    id("com.android.application")
+    id("org.jetbrains.kotlin.android")
     id("dagger.hilt.android.plugin")
+    id("kotlin-kapt")
 }
 
 android {
     namespace = "com.ramesh.lloydscleanarchitecture"
-    compileSdk = 35
+    compileSdk = Versions.compile_sdk
 
     defaultConfig {
         applicationId = "com.ramesh.lloydscleanarchitecture"
-        minSdk = 24
-        targetSdk = 35
-        versionCode = 1
-        versionName = "1.0"
+        minSdk = Versions.min_sdk
+        targetSdk = Versions.target_sdk
+        versionCode = Versions.version_code
+        versionName = Versions.version_name
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -27,83 +27,61 @@ android {
     buildTypes {
         release {
             isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = JavaVersion.VERSION_11.toString()
     }
     buildFeatures {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
+        kotlinCompilerExtensionVersion = Versions.compose_compiler
     }
-    packaging {
+    packagingOptions {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
+        }
+    }
+    tasks.withType().configureEach {
+        kotlinOptions {
+            freeCompilerArgs = freeCompilerArgs + listOf(
+                "-opt-in=kotlin.RequiresOptIn",
+                "-opt-in=androidx.compose.material3.ExperimentalMaterial3Api",
+                "-opt-in=androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi",
+            )
         }
     }
 }
 
 dependencies {
 
-    dependencies {
-        // Core Kotlin extensions for Android framework APIs
-        implementation(libs.androidx.core.ktx)
-        // Lifecycle-aware components for Kotlin
-        implementation(libs.androidx.lifecycle.runtime.ktx)
-        // Integration between Compose and Activities
-        implementation(libs.androidx.activity.compose)
-        // Compose Bill of Materials (BOM) for consistent versions
-        implementation(platform(libs.androidx.compose.bom))
-        // Foundation library for Compose UI
-        implementation(libs.androidx.ui)
-        // Graphics components for Compose UI
-        implementation(libs.androidx.ui.graphics)
-        // Tooling for previewing Compose UI
-        implementation(libs.androidx.ui.tooling.preview)
-        // Material Design 3 components for Compose
-        implementation(libs.androidx.material3)
-        // JUnit for unit testing
-        testImplementation(libs.junit)
-        // Android JUnit runner for instrumentation tests
-        androidTestImplementation(libs.androidx.junit)
-        // Espresso for UI testing
-        androidTestImplementation(libs.androidx.espresso.core)
-        // Compose BOM for instrumentation tests
-        androidTestImplementation(platform(libs.androidx.compose.bom))
-        // Compose UI testing library
-        androidTestImplementation(libs.androidx.ui.test.junit4)
-        // Compose UI tooling for debugging
-        debugImplementation(libs.androidx.ui.tooling)
-        // Compose UI test manifest for instrumentation tests
-        debugImplementation(libs.androidx.ui.test.manifest)
 
-        // Hilt for dependency injection
-        implementation(libs.hilt.android)
-        // Hilt annotation processor
-        kapt(libs.hilt.compiler)
-        // Hilt annotation processor for AndroidX
-        kapt(libs.androidx.hilt.compiler)
 
-        // Kotlin Coroutines for asynchronous programming
-        implementation(libs.kotlinx.coroutines.core)
-        // Coil for image loading in Compose
-        implementation(libs.coil.compose)
-        // Retrofit for network requests
-        implementation(libs.retrofit)
-        // Gson converter for Retrofit
-        implementation(libs.converter.gson)
+    implementation(project(Modules.core))
+    implementation(project(Modules.assessment))
+
+
+    // TESTING
+    testImplementation(LyodsDependencies.junit)
+    androidTestImplementation(LyodsDependencies.test_ext_junit)
+    androidTestImplementation(LyodsDependencies.espresso_core)
+    androidTestImplementation(LyodsDependencies.junit_compose)
+    debugImplementation(LyodsDependencies.ui_tooling)
+    debugImplementation(LyodsDependencies.ui_test_manifest)
+
+    // Hilt
+    implementation(LyodsDependencies.hilt_android)
+    kapt(LyodsDependencies.hilt_android_compiler)
+    kapt(LyodsDependencies.hilt_compose_compiler)
+
+
     }
 
 
 
-}
