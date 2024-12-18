@@ -7,42 +7,50 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
+import androidx.compose.material3.windowsizeclass.calculateWindowSizeClass
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
-import com.ramesh.lloydscleanarchitecture.ui.theme.LloydsCleanArchitectureTheme
+import com.ramesh.assessment.navigation.model.SplashScreen
+import com.ramesh.core.ui.componets.particle.theme.JetShopeeTheme
+import com.ramesh.lloydscleanarchitecture.ui.theme.LlyodMainApp
+import dagger.hilt.android.AndroidEntryPoint
 
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         setContent {
-            LloydsCleanArchitectureTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
+            JetShopeeTheme {
+                Surface {
+                    val windowSize = calculateWindowSizeClass(this)
+                    var showSplashScreen by remember { mutableStateOf(true) }
+                    if (showSplashScreen) {
+                        SplashScreen(onTimeout = { showSplashScreen = false })
+                    } else {
+                        LlyodMainApp(windowSize = windowSize.widthSizeClass)
+                    }
                 }
             }
         }
     }
 }
 
+@Preview(showBackground = true, device = Devices.PIXEL_4)
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    LloydsCleanArchitectureTheme {
-        Greeting("Android")
+fun JetShopeePreview() {
+    JetShopeeTheme {
+        Surface {
+            LlyodMainApp(windowSize = WindowWidthSizeClass.Compact)
+        }
     }
 }

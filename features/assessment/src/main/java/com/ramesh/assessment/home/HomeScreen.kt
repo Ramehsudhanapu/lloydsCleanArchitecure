@@ -1,5 +1,6 @@
 package com.ramesh.assessment.home
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -21,6 +22,7 @@ import com.ramesh.core.data.model.ProductResponse
 import com.ramesh.core.ui.componets.particle.SearchBar
 import com.ramesh.core.ui.componets.particle.template.MainTemplate
 import com.ramesh.core.ui.componets.particle.theme.Gray200
+import com.ramesh.core.ui.componets.particle.theme.md_theme_dark_inverseSurface
 
 @Composable
 fun HomeScreen(
@@ -29,6 +31,7 @@ fun HomeScreen(
     navigateToDetail: (Int) -> Unit,
     navigateToSearch: () -> Unit
 ) {
+
     val UiStateCategory by remember { viewModel.UiStateCategory }.collectAsState()
 
     MainTemplate(

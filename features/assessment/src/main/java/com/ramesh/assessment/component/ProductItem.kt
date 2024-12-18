@@ -19,6 +19,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.SubcomposeAsyncImage
 import coil.request.ImageRequest
@@ -75,19 +76,20 @@ fun ProductItem(
                     ),
                     color = Color.Black
                 )
-//                Text(
-//                    text = product.price.fromDollarToRupiah(),
-//                    maxLines = 1,
-//                    overflow = TextOverflow.Ellipsis,
-//                    style = MaterialTheme.typography.bodySmall,
-//                    color = MaterialTheme.colorScheme.secondary
-//                )
+                Text(
+                    text = product.price.fromDollarToRupiah(),
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.secondary
+                )
             }
         }
     }
 }
 
 @Composable
+@Preview(showBackground = true)
 fun ProductItemPreview() {
     ProductItem(
         product = Product(

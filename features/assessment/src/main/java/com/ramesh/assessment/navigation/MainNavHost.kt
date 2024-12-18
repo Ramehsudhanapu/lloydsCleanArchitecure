@@ -9,6 +9,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.ramesh.assessment.home.HomeScreen
 
 import com.ramesh.assessment.navigation.model.BottomBarScreen
 import com.ramesh.assessment.navigation.model.GeneralScreen
@@ -25,14 +26,14 @@ fun MainNavHost(
         modifier = Modifier.padding(innerPadding)
     ) {
         composable(BottomBarScreen.Home.route) {
-//            HomeScreen(
-//                navigateToDetail = { productId ->
-//                    navController.navigate(GeneralScreen.DetailProduct.createRoute(productId))
-//                },
-//                navigateToSearch = {
-//                    navController.navigate(GeneralScreen.SearchProduct.route)
-//                }
-//            )
+            HomeScreen(
+                navigateToDetail = { productId ->
+                    navController.navigate(GeneralScreen.DetailProduct.createRoute(productId))
+                },
+                navigateToSearch = {
+                    navController.navigate(GeneralScreen.SearchProduct.route)
+                }
+            )
         }
         composable(BottomBarScreen.Cart.route) {
 //            CartScreen(

@@ -22,18 +22,35 @@ android {
     buildTypes {
         release {
             isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = JavaVersion.VERSION_11.toString()
+    }
+    buildFeatures {
+        compose = true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = Versions.compose_compiler
+    }
+    packagingOptions {
+        resources {
+            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+        }
+    }
+    tasks.withType().configureEach {
+        kotlinOptions {
+            freeCompilerArgs = freeCompilerArgs + listOf(
+                "-opt-in=kotlin.RequiresOptIn",
+                "-opt-in=androidx.compose.material3.ExperimentalMaterial3Api",
+                "-opt-in=androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi",
+            )
+        }
     }
 }
 
@@ -42,18 +59,24 @@ dependencies {
 
     // TESTING
     testImplementation(LyodsDependencies.junit)
-    testImplementation(libs.junit)
     androidTestImplementation(LyodsDependencies.test_ext_junit)
     androidTestImplementation(LyodsDependencies.espresso_core)
     androidTestImplementation(LyodsDependencies.junit_compose)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
     debugImplementation(LyodsDependencies.ui_tooling)
     debugImplementation(LyodsDependencies.ui_test_manifest)
+
+
+
 
     // Hilt
     implementation(LyodsDependencies.hilt_android)
     kapt(LyodsDependencies.hilt_android_compiler)
     kapt(LyodsDependencies.hilt_compose_compiler)
+
+
+
+
+
+
 
 }
